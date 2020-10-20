@@ -258,14 +258,16 @@ function Patients() {
                       <Button
                         variant="contained"
                         size="small"
-                        // component={Link}
-                        // to={{ pathname: `/${p.id}`, payload: p }}
-                        // to={{ pathname: `/homex`, payload: p }}
+                        component={Link}
+                        to={{
+                          pathname: `/patients/reports/${p.id}`,
+                          payload: p,
+                        }}
                       >
                         Reports
                       </Button>
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       <IconButton
                         color="secondary"
                         style={{ color: "white" }}
@@ -273,13 +275,13 @@ function Patients() {
                         size="small"
                         // component={Link}
                         to={{
-                          pathname: `/patients/records/${p.id}`,
+                          pathname: `/patients/reports/${p.id}`,
                           payload: p,
                         }}
                       >
                         <InfoIcon />
                       </IconButton>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>

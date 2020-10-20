@@ -1,17 +1,20 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+import {
+  Typography,
+  MenuItem,
+  Toolbar,
+  Button,
+  AppBar,
+  CssBaseline,
+} from "@material-ui/core/";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 // function Copyright() {
 //   return (
 //     <Typography variant="body2" color="textSecondary" align="center">
 //       {"Copyright © "}
-//       <Link color="inherit" href="https://material-ui.com/">
+//       <Link color="inherit" to="https://material-ui.com/">
 //         Your Website
 //       </Link>{" "}
 //       {new Date().getFullYear()}
@@ -63,32 +66,17 @@ export default function NavBar() {
           >
             Base Hospitle Dambulla
           </Typography>
-          <nav>
-            <Link
-              variant="button"
-              color="textPrimary"
-              href="/add"
-              className={classes.link}
-            >
-              Add
-            </Link>
-            <Link
-              variant="button"
-              color="textPrimary"
-              href="reports"
-              className={classes.link}
-            >
-              Reports
-            </Link>
-            <Link
-              variant="button"
-              color="textPrimary"
-              href="/stats"
-              className={classes.link}
-            >
-              Stats
-            </Link>
-          </nav>
+
+          <MenuItem component={Link} to="/add">
+            <Typography>Add</Typography>
+          </MenuItem>
+          <MenuItem component={Link} to="/patients">
+            <Typography>Patients</Typography>
+          </MenuItem>
+          <MenuItem component={Link} to="/stats">
+            <Typography>Stats</Typography>
+          </MenuItem>
+
           <Button
             href="/login"
             color="primary"
@@ -111,7 +99,7 @@ export default function NavBar() {
               <ul>
                 {footer.description.map((item) => (
                   <li key={item}>
-                    <Link href="#" variant="subtitle1" color="textSecondary">
+                    <Link to="#" variant="subtitle1" color="textSecondary">
                       {item}
                     </Link>
                   </li>
