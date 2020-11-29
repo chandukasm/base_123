@@ -4,13 +4,21 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import { PatientContextProvider } from "./contexts/PatientContext";
+import "bootstrap/dist/css/bootstrap.css";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <PatientContextProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </PatientContextProvider>,
+  // </React.StrictMode>,
   document.getElementById("root")
 );
 

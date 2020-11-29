@@ -16,14 +16,15 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import SearchIcon from "@material-ui/icons/Search";
+import React, { useContext, useEffect, useState } from "react";
 import InfoIcon from "@material-ui/icons/Info";
 import { Link } from "react-router-dom";
 import PersonOutlineRoundedIcon from "@material-ui/icons/PersonOutlineRounded";
 import FingerprintRoundedIcon from "@material-ui/icons/FingerprintRounded";
 import PeopleAltTwoToneIcon from "@material-ui/icons/PeopleAltTwoTone";
-
+import { useSelector, useDispatch } from "react-redux";
+import { get_patientsfromDb } from "../redux/actions";
+import { PatientContext } from "../contexts/PatientContext";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -39,37 +40,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Patients() {
+function Patients(props) {
+  const [patients, setPatients] = useContext(PatientContext);
+
   const classes = useStyles();
-  const [patients, setPatients] = useState([]);
   const [res, setRes] = useState([]);
-  const [id, setId] = useState(false);
-  const [first, setFirst] = useState(false);
-  const [last, setLast] = useState(false);
+
   const [one, setOne] = useState("");
   const [two, setTwo] = useState("");
   const [tri, setTri] = useState("");
 
   //async function are not allowed directly in a function so create a function in the
   //effect hook and call it inside the effect hook
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: patients } = await axios.get(
-          "http://localhost:3000/api/patient/all"
-        );
-        setPatients(patients);
-        console.log(patients);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   if (state.patients.length === 0) {
+  //     dispatch(get_patientsfromDb());
+  //   }
+  // }, []);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const serachByID = (e) => {
     setOne(e.currentTarget.value);
+
     let searchInput = e.currentTarget.value.replace(
       /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,
       ""
@@ -206,87 +198,96 @@ function Patients() {
 
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
-          <TableContainer component={Paper} style={{ marginBottom: 10 }}>
-            <Grid
-              container
-              spacing={2}
-              style={{
-                alignItems: "center",
-              }}
-            >
-              <Grid item xs={12} md={4}>
-                <Typography variant="h6">
-                  {/* {searchPressed && searchReasults.length === 0
+          {res.length > 0 ? (
+            <TableContainer component={Paper} style={{ marginBottom: 10 }}>
+              <Grid
+                container
+                spacing={2}
+                style={{
+                  alignItems: "center",
+                }}
+              >
+                <Grid item xs={12} md={4}>
+                  <Typography variant="h6">
+                    {/* {searchPressed && searchReasults.length === 0
                         ? "No Patient With This Name"
                         : ""} */}
-                </Typography>
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
 
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>id</TableCell>
-                  <TableCell>First Name</TableCell>
-                  <TableCell>Last Name</TableCell>
-                  <TableCell>Gender</TableCell>
-                  <TableCell>Tel.</TableCell>
-                  <TableCell>Address</TableCell>
-                  <TableCell>Reports</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {res.map((p) => (
-                  <TableRow key={p.id}>
-                    <TableCell component="th" scope="row">
-                      {p.id}
-                    </TableCell>
-                    <TableCell>
-                      {/* <Link
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>id</TableCell>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Last Name</TableCell>
+                    <TableCell>Gender</TableCell>
+                    <TableCell>Tel.</TableCell>
+                    <TableCell>Address</TableCell>
+                    <TableCell>Reports</TableCell>
+                    <TableCell>Upload</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {res.map((p) => (
+                    <TableRow key={p.id}>
+                      <TableCell component="th" scope="row">
+                        {p.id}
+                      </TableCell>
+                      <TableCell>
+                        {/* <Link
                             to={`/patients/records/${p.id}`}
                             style={{ color: "white" }}
                           > */}
-                      {p.f_name}
-                      {/* </Link> */}
-                    </TableCell>
-                    <TableCell>{p.l_name}</TableCell>
-                    <TableCell>{p.gender}</TableCell>
-                    <TableCell>{p.tel}</TableCell>
+                        {p.f_name}
+                        {/* </Link> */}
+                      </TableCell>
+                      <TableCell>{p.l_name}</TableCell>
+                      <TableCell>{p.gender}</TableCell>
+                      <TableCell>{p.tel}</TableCell>
 
-                    <TableCell>{p.address}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        component={Link}
-                        to={{
-                          pathname: `/patients/reports/${p.id}`,
-                          payload: p,
-                        }}
-                      >
-                        Reports
-                      </Button>
-                    </TableCell>
-                    {/* <TableCell>
-                      <IconButton
-                        color="secondary"
-                        style={{ color: "white" }}
-                        aria-label="info"
-                        size="small"
-                        // component={Link}
-                        to={{
-                          pathname: `/patients/reports/${p.id}`,
-                          payload: p,
-                        }}
-                      >
-                        <InfoIcon />
-                      </IconButton>
-                    </TableCell> */}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                      <TableCell>{p.address}</TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          size="small"
+                          component={Link}
+                          to={{
+                            pathname: `/patients/reports/${p.index}`,
+                            payload: p,
+                          }}
+                        >
+                          Reports
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          size="small"
+                          // color="primary"
+                          component={Link}
+                          style={{
+                            textDecoration: "inherit",
+                          }}
+                          to={{
+                            pathname: `/patients/upload/${p.id}`,
+                            payload: p,
+                          }}
+                        >
+                          Upload
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Grid item alignContent="center" xs={12}>
+              <Typography variant="h5">Find the Patients here</Typography>
+            </Grid>
+          )}
         </Grid>
       </Paper>
     </div>

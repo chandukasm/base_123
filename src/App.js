@@ -8,14 +8,20 @@ import NavBar from "./screens/NavBar";
 import Patients from "./screens/Patients";
 import AddPatient from "./screens/AddPatient";
 import Reports from "./screens/Reports";
+import Upload from "./screens/Upload";
+import { CssBaseline } from "@material-ui/core";
+import Stat from "./screens/Stat";
 
 function App() {
   return (
     <React.Fragment>
+      <CssBaseline />
       <NavBar />
       <Switch>
-        <Route path="patients/reports/:id" component={Reports} />
+        <Route path="/patients/reports/:id" component={Reports} />
+        <Route path="/patients/upload/:id" component={Upload} />
         <Route path="/add" component={AddPatient} />
+        <Route path="/stats" component={Stat} />
         <Route path="/patients" component={Patients} />
         <Route path="/login" component={Login} />
         <Route path="/" exact component={HomePage} />

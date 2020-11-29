@@ -1,0 +1,22 @@
+.red-box {
+  background: "red";
+  width: 200;
+  height: 200;
+  transition: width 2s;
+}
+.red-box:hover {
+  width: 300px;
+}
+
+.buttonx {
+  cursor: pointer;
+  border: 1px solid #1a202c;
+  padding: 20px;
+  min-width: 64px;
+  color: aquamarine;
+  background: rebeccapurple;
+  transition: width 2s;
+}
+buttonx:hover {
+  width: 500px;
+}

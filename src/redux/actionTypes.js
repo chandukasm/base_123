@@ -1,0 +1,2 @@
+export const GET_PATIENTS = "GET_PATIENTS";
+export const SEARCH_RESULTS = "SEARCH_RESULTS";

@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { LocalGasStation } from "@material-ui/icons";
+import axios from "axios";
 
 function Copyright() {
   return (
@@ -25,6 +27,22 @@ function Copyright() {
     </Typography>
   );
 }
+
+const login = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post(
+      "https://evening-inlet-55135.herokuapp.com/auth/login",
+      {
+        username: "shenith",
+        password: "shenith@dambulla",
+      }
+    );
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -93,9 +111,11 @@ export default function Login() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={(e) => login(e)}
           >
             Sign In
           </Button>
+          <button onClick={(e) => login(e)}>Sign In</button>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
